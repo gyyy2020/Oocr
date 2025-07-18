@@ -27,26 +27,33 @@ struct ContentView: View {
                         ProgressView("Recognizing text...")
                             .padding()
                     } else {
-                        // The ScrollView now contains both the text and the button
                         ScrollView {
                             Text(appState.recognizedText)
                                 .padding()
-                                .padding(.top, 25) // Add padding to not overlap with the button
+                                .padding(.top, 35) // Make more room for the controls
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .textSelection(.enabled)
                         }
                         
-                        // --- NEW: THE COPY BUTTON ---
+                        // --- UPDATED CONTROL BAR ---
                         HStack {
-                            Spacer() // Pushes the button to the right
+                            // The new Language Picker
+                            Picker("Language", selection: $appState.selectedLanguage) {
+                                ForEach(Language.availableLanguages) { language in
+                                    Text(language.name).tag(language)
+                                }
+                            }
+                            .pickerStyle(.menu) // Renders as a dropdown
+                            .frame(maxWidth: 200)
+
+                            Spacer() // Pushes controls apart
+                            
                             Button(action: copyTextToClipboard) {
                                 Label("Copy", systemImage: "doc.on.doc")
                             }
-                            .padding(.trailing)
-                            .padding(.top, 8)
-                            // Disable the button if there is no text to copy
                             .disabled(appState.recognizedText.isEmpty)
                         }
+                        .padding()
                     }
                 }
                 .frame(maxHeight: .infinity)
@@ -57,9 +64,16 @@ struct ContentView: View {
             }
         }
         .frame(minWidth: 500, minHeight: 400)
+        // OCR on image change
         .onChange(of: appState.selectedImage) {
             guard let newImage = appState.selectedImage else { return }
             performOCR(on: newImage)
+        }
+        // --- NEW: Re-run OCR on language change ---
+        .onChange(of: appState.selectedLanguage) {
+            // If there's an image loaded, re-process it with the new language.
+            guard let currentImage = appState.selectedImage else { return }
+            performOCR(on: currentImage)
         }
         .onAppear {
             if let initialImage = appState.selectedImage {
@@ -68,7 +82,6 @@ struct ContentView: View {
         }
     }
     
-    // --- NEW: FUNCTION FOR THE BUTTON ---
     private func copyTextToClipboard() {
         let pasteboard = NSPasteboard.general
         pasteboard.clearContents()
@@ -81,7 +94,7 @@ struct ContentView: View {
 
         guard let cgImage = createCGImage(from: image) else {
             DispatchQueue.main.async {
-                appState.recognizedText = "Error: Could not convert the image. Please try a different image (e.g., a standard PNG or JPG)."
+                appState.recognizedText = "Error: Could not convert the image."
                 appState.isRecognizing = false
             }
             return
@@ -90,23 +103,24 @@ struct ContentView: View {
         let request = VNRecognizeTextRequest { (request, error) in
             DispatchQueue.main.async {
                 appState.isRecognizing = false
-
                 if let error = error {
                     appState.recognizedText = "OCR Error: \(error.localizedDescription)"
                     return
                 }
-
                 guard let observations = request.results as? [VNRecognizedTextObservation], !observations.isEmpty else {
                     appState.recognizedText = "No text was found in the image."
                     return
                 }
-
                 appState.recognizedText = observations.compactMap {
                     $0.topCandidates(1).first?.string
                 }.joined(separator: "\n")
             }
         }
-
+        
+        // --- CRUCIAL CHANGE: SET THE LANGUAGE ---
+        // Tell Vision which language to use based on our app's state.
+        request.recognitionLanguages = [appState.selectedLanguage.code]
+        
         request.recognitionLevel = .accurate
         request.usesLanguageCorrection = true
 
