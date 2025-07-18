@@ -45,6 +45,7 @@ struct MenuBar: Scene {
                 // --- CHANGE IS HERE ---
                 // We now specify which window to open by its ID.
                 openWindow(id: mainWindowID)
+                print("open the preview window")
             }
         }
     }

@@ -3,12 +3,16 @@
 ## Function 1: Menu Bar Icon
 
 - **Objective:** Create a menu bar icon with "Open Image" and "Quit" buttons.
-- **Files Modified:**
-    - `OCRApp.swift`: Changed the main `App` scene to use `MenuBarExtra` instead of a default window.
-    - `MenuBar.swift`: (New File) Created to define the content and behavior of the menu bar icon.
-- **Implementation Details:**
-    - Used `MenuBarExtra` to create the menu bar item.
-    - The icon is set to `text.viewfinder`, a system symbol provided by Apple.
-    - Added a "Open Image" button. For now, it only prints a message to the console.
-    - Added a "Quit" button that terminates the application using `NSApplication.shared.terminate(nil)`.
+- **Status:** ✅ **Verified.**
+
+---
+
+## Function 2: Open a Picture in a Window
+
+- **Objective:** Allow the user to select an image file (jpg, png) and display it in a new window.
+- **Files Modified/Created:**
+    - `AppState.swift`: (New File) Created an `ObservableObject` to manage the currently selected `NSImage`.
+    - `ContentView.swift`: (New File) Created a SwiftUI View to display the image from the `AppState`.
+    - `OCRApp.swift`: (Modified) Instantiated `AppState`. Set up a `WindowGroup` **with a unique ID ("main-ocr-window")** for the `ContentView`. Passed the `AppState` as an `environmentObject`.
+    - `MenuBar.swift`: (Modified) Implemented the `openImageFromFile` function. This function uses `NSOpenPanel` to let the user select a file. On success, it updates `appState.selectedImage` and calls **`openWindow(id: "main-ocr-window")`** to show the correct window.
 - **Status:** **Waiting for verification.**
