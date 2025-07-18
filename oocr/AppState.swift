@@ -5,11 +5,14 @@
 //  Created by Atlantic on 7/18/25.
 //
 
-
 import SwiftUI
 
-// This class will hold the shared state for our application.
 class AppState: ObservableObject {
-    // @Published will notify any listening views when the selected image changes.
     @Published var selectedImage: NSImage?
+    
+    // ---- NEW PROPERTIES ----
+    // This will hold the text found by the OCR process.
+    @Published var recognizedText: String = ""
+    // This will be true while the OCR is in progress.
+    @Published var isRecognizing: Bool = false
 }
