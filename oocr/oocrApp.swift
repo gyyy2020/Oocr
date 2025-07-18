@@ -10,8 +10,7 @@ import SwiftUI
 @main
 struct oocrApp: App {
     var body: some Scene {
-        WindowGroup {
-            ContentView()
-        }
+        // We will manage the app's presence through the menu bar icon.
+        MenuBar()
     }
 }
