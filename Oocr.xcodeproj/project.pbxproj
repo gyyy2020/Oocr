@@ -24,9 +24,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		3F82E4292E2A203A00DD93D6 /* oocr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = oocr.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		3F82E4372E2A203B00DD93D6 /* oocrTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = oocrTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		3F82E4412E2A203B00DD93D6 /* oocrUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = oocrUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3F82E4292E2A203A00DD93D6 /* Oocr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Oocr.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3F82E4372E2A203B00DD93D6 /* OocrTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OocrTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3F82E4412E2A203B00DD93D6 /* OocrUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OocrUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -85,9 +85,9 @@
 		3F82E42A2E2A203A00DD93D6 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				3F82E4292E2A203A00DD93D6 /* oocr.app */,
-				3F82E4372E2A203B00DD93D6 /* oocrTests.xctest */,
-				3F82E4412E2A203B00DD93D6 /* oocrUITests.xctest */,
+				3F82E4292E2A203A00DD93D6 /* Oocr.app */,
+				3F82E4372E2A203B00DD93D6 /* OocrTests.xctest */,
+				3F82E4412E2A203B00DD93D6 /* OocrUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -95,9 +95,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		3F82E4282E2A203A00DD93D6 /* oocr */ = {
+		3F82E4282E2A203A00DD93D6 /* Oocr */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3F82E44B2E2A203B00DD93D6 /* Build configuration list for PBXNativeTarget "oocr" */;
+			buildConfigurationList = 3F82E44B2E2A203B00DD93D6 /* Build configuration list for PBXNativeTarget "Oocr" */;
 			buildPhases = (
 				3F82E4252E2A203A00DD93D6 /* Sources */,
 				3F82E4262E2A203A00DD93D6 /* Frameworks */,
@@ -110,16 +110,16 @@
 			fileSystemSynchronizedGroups = (
 				3F82E42B2E2A203A00DD93D6 /* oocr */,
 			);
-			name = oocr;
+			name = Oocr;
 			packageProductDependencies = (
 			);
 			productName = oocr;
-			productReference = 3F82E4292E2A203A00DD93D6 /* oocr.app */;
+			productReference = 3F82E4292E2A203A00DD93D6 /* Oocr.app */;
 			productType = "com.apple.product-type.application";
 		};
-		3F82E4362E2A203B00DD93D6 /* oocrTests */ = {
+		3F82E4362E2A203B00DD93D6 /* OocrTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3F82E44E2E2A203B00DD93D6 /* Build configuration list for PBXNativeTarget "oocrTests" */;
+			buildConfigurationList = 3F82E44E2E2A203B00DD93D6 /* Build configuration list for PBXNativeTarget "OocrTests" */;
 			buildPhases = (
 				3F82E4332E2A203B00DD93D6 /* Sources */,
 				3F82E4342E2A203B00DD93D6 /* Frameworks */,
@@ -133,16 +133,16 @@
 			fileSystemSynchronizedGroups = (
 				3F82E43A2E2A203B00DD93D6 /* oocrTests */,
 			);
-			name = oocrTests;
+			name = OocrTests;
 			packageProductDependencies = (
 			);
 			productName = oocrTests;
-			productReference = 3F82E4372E2A203B00DD93D6 /* oocrTests.xctest */;
+			productReference = 3F82E4372E2A203B00DD93D6 /* OocrTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		3F82E4402E2A203B00DD93D6 /* oocrUITests */ = {
+		3F82E4402E2A203B00DD93D6 /* OocrUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3F82E4512E2A203B00DD93D6 /* Build configuration list for PBXNativeTarget "oocrUITests" */;
+			buildConfigurationList = 3F82E4512E2A203B00DD93D6 /* Build configuration list for PBXNativeTarget "OocrUITests" */;
 			buildPhases = (
 				3F82E43D2E2A203B00DD93D6 /* Sources */,
 				3F82E43E2E2A203B00DD93D6 /* Frameworks */,
@@ -156,11 +156,11 @@
 			fileSystemSynchronizedGroups = (
 				3F82E4442E2A203B00DD93D6 /* oocrUITests */,
 			);
-			name = oocrUITests;
+			name = OocrUITests;
 			packageProductDependencies = (
 			);
 			productName = oocrUITests;
-			productReference = 3F82E4412E2A203B00DD93D6 /* oocrUITests.xctest */;
+			productReference = 3F82E4412E2A203B00DD93D6 /* OocrUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -186,7 +186,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 3F82E4242E2A203A00DD93D6 /* Build configuration list for PBXProject "oocr" */;
+			buildConfigurationList = 3F82E4242E2A203A00DD93D6 /* Build configuration list for PBXProject "Oocr" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -200,9 +200,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				3F82E4282E2A203A00DD93D6 /* oocr */,
-				3F82E4362E2A203B00DD93D6 /* oocrTests */,
-				3F82E4402E2A203B00DD93D6 /* oocrUITests */,
+				3F82E4282E2A203A00DD93D6 /* Oocr */,
+				3F82E4362E2A203B00DD93D6 /* OocrTests */,
+				3F82E4402E2A203B00DD93D6 /* OocrUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -258,12 +258,12 @@
 /* Begin PBXTargetDependency section */
 		3F82E4392E2A203B00DD93D6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 3F82E4282E2A203A00DD93D6 /* oocr */;
+			target = 3F82E4282E2A203A00DD93D6 /* Oocr */;
 			targetProxy = 3F82E4382E2A203B00DD93D6 /* PBXContainerItemProxy */;
 		};
 		3F82E4432E2A203B00DD93D6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 3F82E4282E2A203A00DD93D6 /* oocr */;
+			target = 3F82E4282E2A203A00DD93D6 /* Oocr */;
 			targetProxy = 3F82E4422E2A203B00DD93D6 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -410,7 +410,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.rainstorm.oocr;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rainstorm.Oocr;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -437,7 +437,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.rainstorm.oocr;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rainstorm.Oocr;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -459,7 +459,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/oocr.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/oocr";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Oocr.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Oocr";
 			};
 			name = Debug;
 		};
@@ -477,7 +477,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/oocr.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/oocr";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Oocr.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Oocr";
 			};
 			name = Release;
 		};
@@ -516,7 +516,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		3F82E4242E2A203A00DD93D6 /* Build configuration list for PBXProject "oocr" */ = {
+		3F82E4242E2A203A00DD93D6 /* Build configuration list for PBXProject "Oocr" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3F82E4492E2A203B00DD93D6 /* Debug */,
@@ -525,7 +525,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3F82E44B2E2A203B00DD93D6 /* Build configuration list for PBXNativeTarget "oocr" */ = {
+		3F82E44B2E2A203B00DD93D6 /* Build configuration list for PBXNativeTarget "Oocr" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3F82E44C2E2A203B00DD93D6 /* Debug */,
@@ -534,7 +534,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3F82E44E2E2A203B00DD93D6 /* Build configuration list for PBXNativeTarget "oocrTests" */ = {
+		3F82E44E2E2A203B00DD93D6 /* Build configuration list for PBXNativeTarget "OocrTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3F82E44F2E2A203B00DD93D6 /* Debug */,
@@ -543,7 +543,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3F82E4512E2A203B00DD93D6 /* Build configuration list for PBXNativeTarget "oocrUITests" */ = {
+		3F82E4512E2A203B00DD93D6 /* Build configuration list for PBXNativeTarget "OocrUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3F82E4522E2A203B00DD93D6 /* Debug */,

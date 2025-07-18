@@ -11,11 +11,19 @@ import Vision
 
 struct ContentView: View {
     @EnvironmentObject var appState: AppState
-    // 1. Get the dismiss action from the environment
     @Environment(\.dismiss) var dismiss
 
     var body: some View {
-        VStack(spacing: 0) {
+        let currentLayout: any Layout = {
+            switch appState.selectedLayout {
+            case .vertical:
+                return VStackLayout(spacing: 0)
+            case .horizontal:
+                return HStackLayout(spacing: 0)
+            }
+        }()
+
+        AnyLayout(currentLayout) {
             if let selectedImage = appState.selectedImage {
                 Image(nsImage: selectedImage)
                     .resizable()
@@ -39,16 +47,22 @@ struct ContentView: View {
                         
                         HStack {
                             Picker("Language", selection: $appState.selectedLanguage) {
-                                ForEach(Language.availableLanguages) { language in
-                                    Text(language.name).tag(language)
+                                ForEach(Language.availableLanguages) { lang in
+                                    Text(lang.name).tag(lang)
                                 }
                             }
                             .pickerStyle(.menu)
-                            .frame(maxWidth: 200)
 
-                            Spacer()
+//                            Spacer()
                             
-                            // 2. The new "Close & New" button
+                            Picker("", selection: $appState.selectedLayout) {
+                                ForEach(LayoutDirection.allCases) { direction in
+                                    Text(direction.rawValue).tag(direction)
+                                }
+                            }
+                            .pickerStyle(.segmented)
+                            .frame(width: 120)
+                            
                             Button("Close & New", action: closeAndSelectNew)
 
                             Button(action: copyTextToClipboard) {
@@ -59,14 +73,14 @@ struct ContentView: View {
                         .padding()
                     }
                 }
-                .frame(maxHeight: .infinity)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
 
             } else {
                 Text("Select an image from the menu bar icon.")
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
-        .frame(minWidth: 500, minHeight: 400)
+        .frame(minWidth: 600, minHeight: 400)
         .onChange(of: appState.selectedImage) {
             guard let newImage = appState.selectedImage else { return }
             performOCR(on: newImage)
@@ -76,19 +90,14 @@ struct ContentView: View {
             performOCR(on: currentImage)
         }
         .onAppear {
-             // More robust: Always trigger OCR if there's an image
-             // and the view appears. This handles the "Close & New" case perfectly.
-             if let initialImage = appState.selectedImage {
-                 performOCR(on: initialImage)
-             }
-         }
+            if let initialImage = appState.selectedImage {
+                performOCR(on: initialImage)
+            }
+        }
     }
     
-    // 3. The action for the new button
     private func closeAndSelectNew() {
-        // Post a notification to tell the MenuBar to open the file panel
         NotificationCenter.default.post(name: .selectNewImage, object: nil)
-        // Dismiss the current window
         dismiss()
     }
     
@@ -99,7 +108,12 @@ struct ContentView: View {
     }
 
     private func performOCR(on image: NSImage) {
+        // --- THIS IS THE FIX ---
+        // The incorrect guard statement has been removed.
+        // We now allow performOCR to run every time it is intentionally called.
+        
         appState.isRecognizing = true
+        // We still clear the old text here, which is correct.
         appState.recognizedText = ""
 
         guard let cgImage = createCGImage(from: image) else {
