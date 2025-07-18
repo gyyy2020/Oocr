@@ -16,13 +16,15 @@ struct oocrApp: App {
     private let mainWindowID = "main-ocr-window"
 
     var body: some Scene {
+        
+        MenuBar()
+            .environmentObject(appState)
+        
         // We now identify our WindowGroup with a specific ID.
         WindowGroup(id: mainWindowID) {
             ContentView()
                 .environmentObject(appState)
         }
         
-        MenuBar()
-            .environmentObject(appState)
     }
 }
