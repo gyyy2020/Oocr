@@ -22,18 +22,30 @@ struct ContentView: View {
 
                 Divider()
 
-                // Display a loading indicator OR the final text.
-                // This makes the UI cleaner.
-                ZStack {
+                ZStack(alignment: .top) {
                     if appState.isRecognizing {
                         ProgressView("Recognizing text...")
                             .padding()
                     } else {
+                        // The ScrollView now contains both the text and the button
                         ScrollView {
                             Text(appState.recognizedText)
                                 .padding()
+                                .padding(.top, 25) // Add padding to not overlap with the button
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .textSelection(.enabled)
+                        }
+                        
+                        // --- NEW: THE COPY BUTTON ---
+                        HStack {
+                            Spacer() // Pushes the button to the right
+                            Button(action: copyTextToClipboard) {
+                                Label("Copy", systemImage: "doc.on.doc")
+                            }
+                            .padding(.trailing)
+                            .padding(.top, 8)
+                            // Disable the button if there is no text to copy
+                            .disabled(appState.recognizedText.isEmpty)
                         }
                     }
                 }
@@ -46,27 +58,27 @@ struct ContentView: View {
         }
         .frame(minWidth: 500, minHeight: 400)
         .onChange(of: appState.selectedImage) {
-            // This now correctly handles the case where the view might appear
-            // with an image already set.
             guard let newImage = appState.selectedImage else { return }
             performOCR(on: newImage)
         }
-        // This is for when the view first appears.
         .onAppear {
             if let initialImage = appState.selectedImage {
                 performOCR(on: initialImage)
             }
         }
     }
+    
+    // --- NEW: FUNCTION FOR THE BUTTON ---
+    private func copyTextToClipboard() {
+        let pasteboard = NSPasteboard.general
+        pasteboard.clearContents()
+        pasteboard.setString(appState.recognizedText, forType: .string)
+    }
 
-    // --- FUNCTION REVISED FOR RELIABILITY ---
     private func performOCR(on image: NSImage) {
-        // 1. Set loading state and clear old text
         appState.isRecognizing = true
         appState.recognizedText = ""
 
-        // 2. Use a more robust method to get a CGImage.
-        // This avoids common issues with different image formats.
         guard let cgImage = createCGImage(from: image) else {
             DispatchQueue.main.async {
                 appState.recognizedText = "Error: Could not convert the image. Please try a different image (e.g., a standard PNG or JPG)."
@@ -75,9 +87,7 @@ struct ContentView: View {
             return
         }
 
-        // 3. Create the Vision request
         let request = VNRecognizeTextRequest { (request, error) in
-            // Switch back to the main thread to update the UI
             DispatchQueue.main.async {
                 appState.isRecognizing = false
 
@@ -97,11 +107,9 @@ struct ContentView: View {
             }
         }
 
-        // Configure the request for better accuracy
         request.recognitionLevel = .accurate
         request.usesLanguageCorrection = true
 
-        // Perform the request on a background thread
         DispatchQueue.global(qos: .userInitiated).async {
             let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
             do {
@@ -115,8 +123,6 @@ struct ContentView: View {
         }
     }
     
-    // --- NEW HELPER FUNCTION ---
-    // This function reliably converts an NSImage to a CGImage.
     private func createCGImage(from nsImage: NSImage) -> CGImage? {
         var imageRect = CGRect(x: 0, y: 0, width: nsImage.size.width, height: nsImage.size.height)
         return nsImage.cgImage(forProposedRect: &imageRect, context: nil, hints: nil)
