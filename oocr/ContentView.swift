@@ -11,6 +11,8 @@ import Vision
 
 struct ContentView: View {
     @EnvironmentObject var appState: AppState
+    // 1. Get the dismiss action from the environment
+    @Environment(\.dismiss) var dismiss
 
     var body: some View {
         VStack(spacing: 0) {
@@ -30,24 +32,25 @@ struct ContentView: View {
                         ScrollView {
                             Text(appState.recognizedText)
                                 .padding()
-                                .padding(.top, 35) // Make more room for the controls
+                                .padding(.top, 35)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .textSelection(.enabled)
                         }
                         
-                        // --- UPDATED CONTROL BAR ---
                         HStack {
-                            // The new Language Picker
                             Picker("Language", selection: $appState.selectedLanguage) {
                                 ForEach(Language.availableLanguages) { language in
                                     Text(language.name).tag(language)
                                 }
                             }
-                            .pickerStyle(.menu) // Renders as a dropdown
+                            .pickerStyle(.menu)
                             .frame(maxWidth: 200)
 
-                            Spacer() // Pushes controls apart
+                            Spacer()
                             
+                            // 2. The new "Close & New" button
+                            Button("Close & New", action: closeAndSelectNew)
+
                             Button(action: copyTextToClipboard) {
                                 Label("Copy", systemImage: "doc.on.doc")
                             }
@@ -64,22 +67,29 @@ struct ContentView: View {
             }
         }
         .frame(minWidth: 500, minHeight: 400)
-        // OCR on image change
         .onChange(of: appState.selectedImage) {
             guard let newImage = appState.selectedImage else { return }
             performOCR(on: newImage)
         }
-        // --- NEW: Re-run OCR on language change ---
         .onChange(of: appState.selectedLanguage) {
-            // If there's an image loaded, re-process it with the new language.
             guard let currentImage = appState.selectedImage else { return }
             performOCR(on: currentImage)
         }
         .onAppear {
-            if let initialImage = appState.selectedImage {
-                performOCR(on: initialImage)
-            }
-        }
+             // More robust: Always trigger OCR if there's an image
+             // and the view appears. This handles the "Close & New" case perfectly.
+             if let initialImage = appState.selectedImage {
+                 performOCR(on: initialImage)
+             }
+         }
+    }
+    
+    // 3. The action for the new button
+    private func closeAndSelectNew() {
+        // Post a notification to tell the MenuBar to open the file panel
+        NotificationCenter.default.post(name: .selectNewImage, object: nil)
+        // Dismiss the current window
+        dismiss()
     }
     
     private func copyTextToClipboard() {
@@ -99,7 +109,7 @@ struct ContentView: View {
             }
             return
         }
-
+        
         let request = VNRecognizeTextRequest { (request, error) in
             DispatchQueue.main.async {
                 appState.isRecognizing = false
@@ -117,10 +127,7 @@ struct ContentView: View {
             }
         }
         
-        // --- CRUCIAL CHANGE: SET THE LANGUAGE ---
-        // Tell Vision which language to use based on our app's state.
         request.recognitionLanguages = [appState.selectedLanguage.code]
-        
         request.recognitionLevel = .accurate
         request.usesLanguageCorrection = true
 

@@ -8,26 +8,30 @@
 
 import SwiftUI
 import UniformTypeIdentifiers
+import Combine
 
 struct MenuBar: Scene {
     @EnvironmentObject var appState: AppState
     @Environment(\.openWindow) var openWindow
-    
-    // --- CHANGE IS HERE ---
-    // The ID must match the one defined in OCRApp.swift
     private let mainWindowID = "main-ocr-window"
+    
+    private let selectNewImagePublisher = NotificationCenter.default.publisher(for: .selectNewImage)
 
     var body: some Scene {
         MenuBarExtra("OCR App", systemImage: "text.viewfinder") {
-            
-            Button("Open Image") {
-                openImageFromFile()
+            VStack {
+                Button("Open Image") {
+                    openImageFromFile()
+                }
+                Divider()
+                Button("Quit") {
+                    NSApplication.shared.terminate(nil)
+                }
             }
-            
-            Divider()
-            
-            Button("Quit") {
-                NSApplication.shared.terminate(nil)
+            .onReceive(selectNewImagePublisher) { _ in
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    self.openImageFromFile()
+                }
             }
         }
     }
@@ -36,16 +40,22 @@ struct MenuBar: Scene {
         let panel = NSOpenPanel()
         panel.allowsMultipleSelection = false
         panel.canChooseDirectories = false
-        panel.allowedContentTypes = [UTType.jpeg, UTType.png]
+        panel.allowedContentTypes = [UTType.jpeg, UTType.png, UTType.tiff]
         
         if panel.runModal() == .OK {
             if let url = panel.url, let image = NSImage(contentsOf: url) {
+                // --- THIS IS THE FIX ---
+                // Clear previous OCR results to ensure the process re-triggers
+                // on the new window's .onAppear modifier.
+                appState.recognizedText = ""
+                
+                // Now set the new image
                 appState.selectedImage = image
                 
-                // --- CHANGE IS HERE ---
-                // We now specify which window to open by its ID.
+                NSApp.setActivationPolicy(.regular)
+                NSApp.activate(ignoringOtherApps: true)
+                
                 openWindow(id: mainWindowID)
-                print("open the preview window")
             }
         }
     }
